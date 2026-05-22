@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java实习Offer对比 | 薪资/城市/福利综合计算器</title>
+<meta name="description" content="拿到多个Java实习Offer不知道怎么选？输入薪资、城市、福利，自动对比总包和性价比。2026年Java后端实习生必备决策工具。">
+<meta name="keywords" content="Java实习Offer对比,Offer选择,程序员薪资计算,实习选择,2026应届生,城市生活成本">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f5f5f5;color:#333}
+.header{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:30px 20px;text-align:center}
+.header h1{font-size:1.8em;margin-bottom:8px}
+.header p{opacity:0.85;font-size:1em}
+.container{max-width:900px;margin:20px auto;padding:0 15px}
+.card{background:#fff;border-radius:12px;padding:25px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.card h3{margin-bottom:15px;color:#667eea;font-size:1.2em}
+.row{display:flex;gap:20px;flex-wrap:wrap}
+.col{flex:1;min-width:280px}
+label{display:block;font-weight:bold;margin:10px 0 5px;color:#555}
+input,select{width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:8px;font-size:1em;transition:border-color 0.3s}
+input:focus,select:focus{outline:none;border-color:#667eea}
+.result-box{background:#f0f4ff;border-radius:8px;padding:20px;margin:15px 0}
+.result-box .big-num{font-size:2.5em;font-weight:bold;color:#667eea}
+.result-box .unit{font-size:1em;color:#888}
+.result-detail{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:10px}
+.result-detail span{background:#fff;padding:8px 15px;border-radius:20px;font-size:0.9em;color:#555}
+.winner{border:3px solid #4caf50 !important;box-shadow:0 0 20px rgba(76,175,80,0.3)}
+.winner-badge{display:inline-block;background:#4caf50;color:#fff;padding:4px 12px;border-radius:12px;font-size:0.85em;margin-left:8px}
+.city-cost{font-size:0.85em;color:#888;margin-top:5px}
+table{width:100%;border-collapse:collapse;margin:10px 0}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #eee}
+th{background:#f8f9fa;color:#555}
+.donate{text-align:center;margin:40px 0 20px;padding:20px;background:#fffbf0;border:2px dashed #ff9800;border-radius:12px}
+.donate img{width:180px}
+.donate p{color:#666;font-size:0.9em;margin:5px 0}
+.nav{margin-bottom:15px}
+.nav a{color:#667eea;margin-right:15px;text-decoration:none;font-size:0.9em}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>💰 Java实习Offer对比计算器</h1>
+  <p>多个Offer不知道怎么选？输入数据，秒出对比结果</p>
+</div>
+
+<div class="container">
+<div class="nav" style="margin-bottom:15px">
+  <a href="https://abyte-zym.github.io/java-career-blog/">博客</a>
+  <a href="https://abyte-zym.github.io/java-interview-quiz/">题库</a>
+  <a href="https://abyte-zym.github.io/interview-simulator/">模拟器</a>
+</div>
+
+<div class="row">
+<div class="col">
+<div class="card" id="offer1-card">
+<h3>📋 Offer A <input type="text" placeholder="公司名（可选）" id="name1" style="width:auto;display:inline;padding:5px 10px;border:1px solid #ddd;margin-left:8px"></h3>
+<label>试用期月薪（元）</label><input type="number" id="probation1" value="6000" oninput="compute()">
+<label>转正月薪（元）</label><input type="number" id="salary1" value="8000" oninput="compute()">
+<label>年奖金（月数）</label><input type="number" id="bonus1" value="2" min="0" max="12" oninput="compute()">
+<label>城市</label>
+<select id="city1" onchange="compute()">
+  <option value="beijing">北京</option><option value="shanghai">上海</option>
+  <option value="shenzhen" selected>深圳</option><option value="hangzhou">杭州</option>
+  <option value="guangzhou">广州</option><option value="chengdu">成都</option>
+  <option value="wuhan">武汉</option><option value="nanjing">南京</option>
+  <option value="xian">西安</option><option value="changsha">长沙</option>
+  <option value="other">其他</option>
+</select>
+<label>房租补贴（元/月）</label><input type="number" id="rent1" value="0" oninput="compute()">
+<label>餐补（元/月）</label><input type="number" id="meal1" value="0" oninput="compute()">
+<label>公积金比例（%）</label><input type="number" id="fund1" value="12" min="0" max="12" oninput="compute()">
+<div class="result-box" id="result1">
+  <div class="big-num" id="total1">0<span class="unit"> 万/年</span></div>
+  <div class="result-detail">
+    <span id="monthly1">月均 0</span><span id="deduct1">公积金 0</span><span id="real1">实得 0万</span>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="col">
+<div class="card" id="offer2-card">
+<h3>📋 Offer B <input type="text" placeholder="公司名（可选）" id="name2" style="width:auto;display:inline;padding:5px 10px;border:1px solid #ddd;margin-left:8px"></h3>
+<label>试用期月薪（元）</label><input type="number" id="probation2" value="5500" oninput="compute()">
+<label>转正月薪（元）</label><input type="number" id="salary2" value="7500" oninput="compute()">
+<label>年奖金（月数）</label><input type="number" id="bonus2" value="3" min="0" max="12" oninput="compute()">
+<label>城市</label>
+<select id="city2" onchange="compute()">
+  <option value="beijing">北京</option><option value="shanghai">上海</option>
+  <option value="shenzhen">深圳</option><option value="hangzhou" selected>杭州</option>
+  <option value="guangzhou">广州</option><option value="chengdu">成都</option>
+  <option value="wuhan">武汉</option><option value="nanjing">南京</option>
+  <option value="xian">西安</option><option value="changsha">长沙</option>
+  <option value="other">其他</option>
+</select>
+<label>房租补贴（元/月）</label><input type="number" id="rent2" value="800" oninput="compute()">
+<label>餐补（元/月）</label><input type="number" id="meal2" value="400" oninput="compute()">
+<label>公积金比例（%）</label><input type="number" id="fund2" value="12" min="0" max="12" oninput="compute()">
+<div class="result-box" id="result2">
+  <div class="big-num" id="total2">0<span class="unit"> 万/年</span></div>
+  <div class="result-detail">
+    <span id="monthly2">月均 0</span><span id="deduct2">公积金 0</span><span id="real2">实得 0万</span>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h3>📊 城市生活成本参考（租房+吃饭月均）</h3>
+<table>
+<tr><th>城市</th><th>租房（合租）</th><th>吃饭</th><th>交通</th><th>月基础开销</th></tr>
+<tr><td>北京/上海</td><td>2500-3500</td><td>1500-2000</td><td>200-400</td><td>约4200-5900</td></tr>
+<tr><td>深圳</td><td>2000-3000</td><td>1300-1800</td><td>200-300</td><td>约3500-5100</td></tr>
+<tr><td>杭州/广州</td><td>1800-2500</td><td>1200-1600</td><td>150-300</td><td>约3150-4400</td></tr>
+<tr><td>成都/武汉/西安</td><td>1000-1800</td><td>1000-1400</td><td>100-200</td><td>约2100-3400</td></tr>
+<tr><td>长沙</td><td>800-1500</td><td>800-1200</td><td>100-200</td><td>约1700-2900</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>🎯 选Offer黄金法则</h3>
+<p style="line-height:2">
+1️⃣ <b>转正机会 > 短期薪资</b> — 能转正的Offer比多500/月的强10倍<br>
+2️⃣ <b>技术栈 > 公司名气</b> — 去写核心代码的小厂比去大厂打杂更有成长<br>
+3️⃣ <b>导师 > 福利</b> — 有靠谱导师带你，3个月顶自学1年<br>
+4️⃣ <b>城市选择</b> — 一线城市机会多但存不下钱；新一线性价比最高<br>
+5️⃣ <b>公积金比例</b> — 12%和5%一年差2万+，这是真金白银
+</p>
+</div>
+
+<div class="donate">
+  <p>☕ 工具帮你省下了纠结的时间？请我喝杯咖啡～</p>
+  <img src="https://raw.githubusercontent.com/Abyte-zym/jarvis-backup/main/donate-qr.png" alt="微信赞赏码">
+  <p>← 微信扫码赞赏，金额随意</p>
+</div>
+
+<p style="text-align:center;color:#999;font-size:0.8em;margin-bottom:30px">
+  <a href="https://abyte-zym.github.io/java-interview-quiz/">面试题库</a> ·
+  <a href="https://abyte-zym.github.io/interview-simulator/">模拟器</a> ·
+  <a href="https://abyte-zym.github.io/java-resume-builder/">简历生成器</a> ·
+  <a href="https://abyte-zym.github.io/java-starter-kit/">脚手架</a>
+</p>
+</div>
+
+<script>
+const cityCost = {
+  beijing:3600, shanghai:3600, shenzhen:3000, hangzhou:2500,
+  guangzhou:2300, chengdu:1800, wuhan:1800, nanjing:2000,
+  xian:1600, changsha:1500, other:2000
+};
+
+function compute() {
+  [1,2].forEach(i => {
+    const prob = parseInt(document.getElementById('probation'+i).value)||0;
+    const sal = parseInt(document.getElementById('salary'+i).value)||0;
+    const bonus = parseInt(document.getElementById('bonus'+i).value)||0;
+    const rent = parseInt(document.getElementById('rent'+i).value)||0;
+    const meal = parseInt(document.getElementById('meal'+i).value)||0;
+    const fund = parseInt(document.getElementById('fund'+i).value)||0;
+    const city = document.getElementById('city'+i).value;
+    const cost = cityCost[city];
+
+    const yearly = prob*3 + sal*9 + sal*bonus + (rent+meal)*12;
+    const fundYear = sal * (fund/100) * 2 * 12;
+    const netYear = yearly - cost*12;
+    const monthly = (sal + rent + meal).toLocaleString();
+
+    document.getElementById('total'+i).innerHTML = (yearly/10000).toFixed(1)+'<span class="unit"> 万/年</span>';
+    document.getElementById('monthly'+i).textContent = '月收 '+monthly;
+    document.getElementById('deduct'+i).textContent = '公积金 '+(fundYear/10000).toFixed(1)+'万/年';
+    document.getElementById('real'+i).textContent = '净剩 '+(netYear/10000).toFixed(1)+'万/年';
+  });
+
+  const net1 = parseFloat(document.getElementById('real1').textContent.match(/-?[\d.]+/)?.[0]||0);
+  const net2 = parseFloat(document.getElementById('real2').textContent.match(/-?[\d.]+/)?.[0]||0);
+  const c1 = document.getElementById('offer1-card');
+  const c2 = document.getElementById('offer2-card');
+  c1.classList.remove('winner'); c2.classList.remove('winner');
+  if(net1 > net2) c1.classList.add('winner');
+  if(net2 > net1) c2.classList.add('winner');
+}
+
+compute();
+</script>
+</body>
+</html>
